@@ -1,0 +1,6 @@
+framework module Pods_SimpleTuner {
+  umbrella header "Pods-SimpleTuner-umbrella.h"
+
+  export *
+  module * { export * }
+}
