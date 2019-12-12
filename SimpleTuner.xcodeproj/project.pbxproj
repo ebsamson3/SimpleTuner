@@ -10,7 +10,6 @@
 		30118A3446B28A0D56B60B01 /* Pods_SimpleTuner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88EC1FF8484FC218A326348F /* Pods_SimpleTuner.framework */; };
 		562B093ED4C9F6D220AC23F5 /* Pods_SimpleTunerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFE96987AB54770C82EA5805 /* Pods_SimpleTunerTests.framework */; };
 		5F16808123A098C5003ABF43 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F16808023A098C5003ABF43 /* AppDelegate.swift */; };
-		5F16808323A098C5003ABF43 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F16808223A098C5003ABF43 /* SceneDelegate.swift */; };
 		5F16808A23A098C7003ABF43 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5F16808923A098C7003ABF43 /* Assets.xcassets */; };
 		5F16808D23A098C7003ABF43 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5F16808B23A098C7003ABF43 /* LaunchScreen.storyboard */; };
 		5F16809823A098C7003ABF43 /* SimpleTunerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F16809723A098C7003ABF43 /* SimpleTunerTests.swift */; };
@@ -43,7 +42,6 @@
 		2F9A9B459538D4F64BB9538A /* Pods-SimpleTuner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SimpleTuner.debug.xcconfig"; path = "Target Support Files/Pods-SimpleTuner/Pods-SimpleTuner.debug.xcconfig"; sourceTree = "<group>"; };
 		5F16807D23A098C5003ABF43 /* SimpleTuner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleTuner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F16808023A098C5003ABF43 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		5F16808223A098C5003ABF43 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		5F16808923A098C7003ABF43 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5F16808C23A098C7003ABF43 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5F16808E23A098C7003ABF43 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -121,16 +119,9 @@
 			isa = PBXGroup;
 			children = (
 				5F16808023A098C5003ABF43 /* AppDelegate.swift */,
-				5F16808223A098C5003ABF43 /* SceneDelegate.swift */,
-				5F3A4C6923A1F58600EF0D47 /* TunerView.swift */,
-				5F3A4C6B23A1F6F600EF0D47 /* GaugeView.swift */,
-				5F3A4C6723A1F4F400EF0D47 /* TunerViewController.swift */,
-				5F3A4C5F23A19A3C00EF0D47 /* TunerViewModel.swift */,
-				5F3A4C6123A1A43100EF0D47 /* AudioInput.swift */,
-				5F1680A223A098E6003ABF43 /* MicrophoneInput.swift */,
-				5FA1829423A09AF500FC40A9 /* PitchRecognizer.swift */,
-				5F3A4C6523A1E6E000EF0D47 /* Note.swift */,
-				5FD26FF023A0C5B9006E97E8 /* ThreadSafe.swift */,
+				5F68FC9823A2ED61000F72EB /* UI */,
+				5FE94B8223A2F96600714F4B /* Pitch Recognition */,
+				5FE94B8323A2F97700714F4B /* Utilities */,
 				5F16808923A098C7003ABF43 /* Assets.xcassets */,
 				5F16808B23A098C7003ABF43 /* LaunchScreen.storyboard */,
 				5F16808E23A098C7003ABF43 /* Info.plist */,
@@ -148,6 +139,36 @@
 				5F3A4C6323A1A5A600EF0D47 /* AudioInputMock.swift */,
 			);
 			path = SimpleTunerTests;
+			sourceTree = "<group>";
+		};
+		5F68FC9823A2ED61000F72EB /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				5F3A4C6923A1F58600EF0D47 /* TunerView.swift */,
+				5F3A4C6B23A1F6F600EF0D47 /* GaugeView.swift */,
+				5F3A4C6723A1F4F400EF0D47 /* TunerViewController.swift */,
+				5F3A4C5F23A19A3C00EF0D47 /* TunerViewModel.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		5FE94B8223A2F96600714F4B /* Pitch Recognition */ = {
+			isa = PBXGroup;
+			children = (
+				5F3A4C6123A1A43100EF0D47 /* AudioInput.swift */,
+				5F1680A223A098E6003ABF43 /* MicrophoneInput.swift */,
+				5FA1829423A09AF500FC40A9 /* PitchRecognizer.swift */,
+				5F3A4C6523A1E6E000EF0D47 /* Note.swift */,
+			);
+			path = "Pitch Recognition";
+			sourceTree = "<group>";
+		};
+		5FE94B8323A2F97700714F4B /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				5FD26FF023A0C5B9006E97E8 /* ThreadSafe.swift */,
+			);
+			path = Utilities;
 			sourceTree = "<group>";
 		};
 		CA1EF870D0C91DD265F8A114 /* Pods */ = {
@@ -338,7 +359,6 @@
 				5F3A4C6223A1A43100EF0D47 /* AudioInput.swift in Sources */,
 				5FD26FF123A0C5B9006E97E8 /* ThreadSafe.swift in Sources */,
 				5F3A4C6C23A1F6F600EF0D47 /* GaugeView.swift in Sources */,
-				5F16808323A098C5003ABF43 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

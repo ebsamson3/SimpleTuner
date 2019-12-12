@@ -9,6 +9,7 @@
 import Foundation
 import AVFoundation
 
+/// Protocol for a tappable audio input
 protocol AudioInput {
 	
 	var sampleRate: Double { get }
@@ -16,6 +17,7 @@ protocol AudioInput {
 	func start() throws
 	func stop()
 	
+	/// Installs a tap for audio buffer analysis/processing
 	func installTap(
 		withBufferSize bufferSize: AVAudioFrameCount,
 		block: @escaping AVAudioNodeTapBlock)

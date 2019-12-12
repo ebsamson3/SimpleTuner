@@ -8,8 +8,10 @@
 
 import UIKit
 
+/// A full screen tuner view with a gauge and note labels
 class TunerView: UIView {
 	
+	//MARK: Properties
 	var gaugeValue: Float {
 		return gaugeView.value
 	}
@@ -33,10 +35,8 @@ class TunerView: UIView {
 		}
 	}
 	
-	private lazy var gaugeView: GaugeView = {
-		let gaugeView = GaugeView()
-		return gaugeView
-	}()
+	//MARK: Subviews
+	private var gaugeView = GaugeView()
 	
 	private lazy var noteLabel: UILabel = {
 		let label = UILabel()
@@ -56,6 +56,7 @@ class TunerView: UIView {
 		return label
 	}()
 
+	//MARK: View Lifecycle
 	init() {
 		super.init(frame: CGRect.zero)
 		configure()
@@ -71,10 +72,12 @@ class TunerView: UIView {
 		configure()
 	}
 	
+	/// Sets the value of the tuner's gauge
 	func setGaugeValue(_ value: Float, animated: Bool) {
 		gaugeView.setValue(value, animated: animated)
 	}
 	
+	/// Configure tuner layout
 	private func configure() {
 		backgroundColor = .black
 		

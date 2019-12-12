@@ -13,6 +13,7 @@ import Foundation
 import Foundation
 import AVFoundation
 
+/// Simple API for managing a microphone audio collection
 class MicrophoneInput: AudioInput {
 	
 	var sampleRate: Double {
@@ -23,8 +24,11 @@ class MicrophoneInput: AudioInput {
 	}
 	
 	private let audioEngine = AVAudioEngine()
+	
+	// Since devices should only have 1 mic we make this class a singleton
 	static let shared = MicrophoneInput()
 	
+	//TODO: Make this throw and handle errors w/ alert
 	private init() {
 		try! configure()
 	}
@@ -43,6 +47,7 @@ class MicrophoneInput: AudioInput {
 		audioEngine.stop()
 	}
 	
+	/// Install tap for analyzing and processing microphone input audio
 	func installTap(
 		withBufferSize bufferSize: AVAudioFrameCount,
 		block: @escaping AVAudioNodeTapBlock)
@@ -57,6 +62,7 @@ class MicrophoneInput: AudioInput {
 			format: recordingFormat, block: block)
 	}
 	
+	/// Remove installed tap on microphone
 	func removeTap() {
 		let inputNode = audioEngine.inputNode
 		inputNode.removeTap(onBus: 0)

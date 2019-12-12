@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// A structure that stores the midi note information of a particular pitch
 struct Note {
 	
 	private static let scaleDegreeToStringMap: [Int: String] = [
@@ -27,9 +28,9 @@ struct Note {
 	]
 	
 	let pitch: Double
-	var midiValue: Double
-	var scaleDegree: Double
-	var stringValue: String
+	var midiValue: Double // Midi note number
+	var scaleDegree: Double // Note # in octave starting and ending with C
+	var stringValue: String // String representation of the note
 	
 	init?(pitch: Double) {
 		guard pitch > 0 else {

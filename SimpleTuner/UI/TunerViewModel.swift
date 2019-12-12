@@ -8,12 +8,18 @@
 
 import Foundation
 
+/// Starts pitch detection and converts detected values into UI updates
 class TunerViewModel {
 	
+	//MARK: Properties
+	
+	// Binding functions for UI updates
 	var didSetGaugeValue: ((Float) -> ())?
 	var didSetNoteString: ((String?) -> ())?
 	var didStAccidentalString: ((String?) -> ())?
 	var didSetIsActive: ((Bool) -> Void)?
+	
+	//MARK: UI state variables
 	
 	var gaugeValue: Float = 0 {
 		didSet {
@@ -39,9 +45,11 @@ class TunerViewModel {
 		}
 	}
 	
+	//MARK: Pitch detection components
 	private let pitchRecognizer: PitchRecognizer
 	private let audioInput: AudioInput
 	
+	//TODO: Add alert controller for displaying alert messages
 	var alertMessage: String?
 	
 	init(pitchRecognizer: PitchRecognizer, audioInput: AudioInput = MicrophoneInput.shared) {
@@ -57,6 +65,7 @@ class TunerViewModel {
 		startAudioInput()
 	}
 	
+	/// Start reading audio from input
 	func startAudioInput() {
 		do {
 			try audioInput.start()
@@ -68,6 +77,7 @@ class TunerViewModel {
 }
 
 extension TunerViewModel: PitchRecognizerDelegate {
+	/// Convert detected pitch into UI updates
 	func pitchRecognizer(didReturnNewResult result: Result<Double, Error>) {
 		switch result {
 		case .failure:
