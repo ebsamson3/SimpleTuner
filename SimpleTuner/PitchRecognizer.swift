@@ -207,16 +207,15 @@ class PitchRecognizer {
 		}
 	}
 	
-	/// Caculates the linear autocorrelation of a 2-D signal
-	private func calculateLinearAutocorrelation(
+	func calculateLinearAutocorrelation(
 		ofInput input: UnsafeMutablePointer<Float>,
 		count: Int) -> [Float]
 	{
 		// log2(W), where W is the number of samples in the calculation window
-		let log2N = UInt(floor(log2(Double(count))))
+		let log2n = UInt(floor(log2(Double(count))))
 		
 		// Largest power of 2 that is less than W. The FFT is more performant when applied to windows with lengths equal to powers of 2.
-		let nPowerOfTwo = Int(1 << log2N)
+		let nPowerOfTwo = Int(1 << log2n)
 		
 		// Dividing the largest power of 2 by 2. Once we get into computations on complex buffers it will make sense why this value is important.
 		let nOver2 = nPowerOfTwo / 2
@@ -225,9 +224,9 @@ class PitchRecognizer {
 		var real = [Float](repeating: 0, count: nOver2)
 		var imag = [Float](repeating: 0, count: nOver2)
 		
-		// Since accelerates digital signal processing method to scale a signal is not in place, we must create output buffers for the result of a scaling operation that we will perform
-		var scaledReal = [Float](repeating: 0, count: nOver2)
-		var scaledImag = [Float](repeating: 0, count: nOver2)
+//		// Since accelerates digital signal processing method to scale a signal is not in place, we must create output buffers for the result of a scaling operation that we will perform
+//		var scaledReal = [Float](repeating: 0, count: nOver2)
+//		var scaledImag = [Float](repeating: 0, count: nOver2)
 		
 		// A split complex buffer for storing real and imaginary components of complex numbers in the separate buffers defined above
 		var tempSplitComplex = DSPSplitComplex(
@@ -236,7 +235,7 @@ class PitchRecognizer {
 		
 		//Here we define fftSetup, or precalculated data that is used by Accelerate to perform Fast Fourier Transforms. The parameters are the log of the max input size the setup can handle and the types of sizes the setup is compatible with respectively. In this case kFFTRadix2 denotes that our input’s size will be a power of 2.
 		guard
-			let fftSetup = vDSP_create_fftsetup(log2N, Int32(kFFTRadix2))
+			let fftSetup = vDSP_create_fftsetup(log2n, Int32(kFFTRadix2))
 		else {
 			return []
 		}
@@ -254,29 +253,29 @@ class PitchRecognizer {
 		vDSP_fft_zrip(
 			fftSetup, // Precalculated data
 			&tempSplitComplex, 1, // Output/input buffer and stride
-			log2N, // Log 2 of the input signal count
+			log2n, // Log 2 of the input signal count
 			FFTDirection(FFT_FORWARD)) // FFT direction
 		
-		//A thing to watch out for is that Accelerate's FFT functions do not perform any scaling automatically. The forward FFT requires us to scale the result by 1/2
-		var scale: Float = 2
-		
-		//Here we use the vDSP_vsdiv() function, which divides a vector by a scaler, to scale our FFT result. Since it is not an in place function, we will utilize the scaled result buffers we created as part of step 1.
-		vDSP_vsdiv(
-			&real, 1, &scale, // Unscaled real component input buffer
-			&scaledReal, 1, // Scaled real component output buffer
-			vDSP_Length(nOver2))
-		
-		vDSP_vsdiv(
-			&imag, 1, &scale, // Unscaled imaginary component input buffer
-			&scaledImag, 1, // Scaled imaginary component output buffer
-			vDSP_Length(nOver2))
-		
-		//Setting the split complex buffer to the new scaled values
-		tempSplitComplex = DSPSplitComplex(
-			realp: &scaledReal,
-			imagp: &scaledImag)
-		
-		//This may look a little strange since we use the same argument three times in a row, so I'll break down what is happening. The first argument pair is the scaled FFT result from our last step and its stride. The first argument pair is multiplied by complex conjugate of the second argument pair. Since we want to multiply our signal by its own complex conjugate, the second argument pair is the same as the first. Lastly, we want to perform an in place operation, so the third argument pair, the output buffer, is yet again the same as the first and second.
+	//	//A thing to watch out for is that Accelerate's FFT functions do not perform any scaling automatically. The forward FFT requires us to scale the result by 1/2
+	//	var scale: Float = 2
+	//
+	//	//Here we use the vDSP_vsdiv() function, which divides a vector by a scaler, to scale our FFT result. Since it is not an in place function, we will utilize the scaled result buffers we created as part of step 1.
+	//	vDSP_vsdiv(
+	//		&real, 1, &scale, // Unscaled real component input buffer
+	//		&scaledReal, 1, // Scaled real component output buffer
+	//		vDSP_Length(nOver2))
+	//
+	//	vDSP_vsdiv(
+	//		&imag, 1, &scale, // Unscaled imaginary component input buffer
+	//		&scaledImag, 1, // Scaled imaginary component output buffer
+	//		vDSP_Length(nOver2))
+	//
+	//	//Setting the split complex buffer to the new scaled values
+	//	tempSplitComplex = DSPSplitComplex(
+	//		realp: &scaledReal,
+	//		imagp: &scaledImag)
+	//
+	//	//This may look a little strange since we use the same argument three times in a row, so I'll break down what is happening. The first argument pair is the scaled FFT result from our last step and its stride. The first argument pair is multiplied by complex conjugate of the second argument pair. Since we want to multiply our signal by its own complex conjugate, the second argument pair is the same as the first. Lastly, we want to perform an in place operation, so the third argument pair, the output buffer, is yet again the same as the first and second.
 		vDSP_zvcmul(
 			&tempSplitComplex, 1, // Normal input
 			&tempSplitComplex, 1, // Complex conjugate input
@@ -287,17 +286,27 @@ class PitchRecognizer {
 		vDSP_fft_zrip(
 			fftSetup, // Precalculated data
 			&tempSplitComplex, 1,  // Output/input buffer and stride
-			log2N, // Log 2 of the input signal count
+			log2n, // Log 2 of the input signal count
 			FFTDirection(FFT_INVERSE)) // FFT direction
 		
 		// Before returning from the function, we destroy our precalculated data. If this is an operation you plan on performing many times, it may be better to store the precalculated data for future use.
 		vDSP_destroy_fftsetup(fftSetup)
 		
 		//A convenient initializer for creating an array from a [DSPSplitComplex]. It even handles scaling. In this case we will scale by 1/W since that is the scaling that needs to be after the IFFT.
-		return Array(
-			fromSplitComplex: tempSplitComplex,
-			scale: 1 / Float(nPowerOfTwo), // Dividing by window size to scale for IFFT
-			count: nOver2)
+		
+		var inverseScale: Float = 1 / Float(nPowerOfTwo * 4)
+		
+		vDSP_vsmul(tempSplitComplex.realp, 1, &inverseScale, tempSplitComplex.realp, 1, vDSP_Length(nOver2))
+		vDSP_vsmul(tempSplitComplex.imagp, 1, &inverseScale, tempSplitComplex.imagp, 1, vDSP_Length(nOver2))
+		
+		var output = [Float](repeating: 0, count: nOver2)
+		let outputPointer = UnsafeMutablePointer(mutating: &output)
+		
+		outputPointer.withMemoryRebound(to: DSPComplex.self, capacity: nOver2 / 2) {
+			vDSP_ztoc(&tempSplitComplex, 1, $0, 2, vDSP_Length(nOver2 / 2))
+		}
+		
+		return output
 	}
 
 	/// Calculates the Square Difference Function, which is essentially a linear autocorrelation that compensates for the gradual loss of amplitude as delay increases. Effectively flattening out the linear autocorrelation.
