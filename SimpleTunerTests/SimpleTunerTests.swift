@@ -24,6 +24,7 @@ class SimpleTunerTests: XCTestCase {
 		let testPitch: Double = 30
 		let sampleRate: Double = 44100
 		
+		// Given a 30 Hz Sine Wave
 		var sineWave = SineGenerator.generateSineWave(
 			frequency: testPitch,
 			sampleRate: sampleRate,
@@ -38,6 +39,7 @@ class SimpleTunerTests: XCTestCase {
 		delegate.didReturnResult = { result in
 			switch result {
 			case .success(let pitch):
+				// The detected pitch to be equal to 30
 				XCTAssertEqual(round(pitch), testPitch)
 			case .failure(let error):
 				XCTFail("Pitch detection failed with error: \(error.localizedDescription)")
@@ -46,17 +48,18 @@ class SimpleTunerTests: XCTestCase {
 			expectation.fulfill()
 		}
 		
-		//pitchRecognizer.start()
+		// When the sine wave audio is appended to the pitch recognizer
 		pitchRecognizer.append(bufferPointer: &sineWave, count: sineWave.count)
 		
 		waitForExpectations(timeout: 5, handler: nil)
 	}
 	
-	func testZeroSignalRecognition() {
+	func testEmptySignalRecognition() {
 		
 		let sampleRate: Double = 44100
 		
-		var zeroSignal = [Float](repeating: 0, count: 4186)
+		// Given an empty audio signal
+		var emptySignal = [Float](repeating: 0, count: 4186)
 		
 		let pitchRecognizer = PitchRecognizer(minimumFrequency: 25, sampleRate: sampleRate)
 		let delegate = PitchRecognizerDelegateMock()
@@ -69,36 +72,45 @@ class SimpleTunerTests: XCTestCase {
 			case .success(let pitch):
 				XCTFail("Detected pitch: \(pitch) in zero signal")
 			case .failure(_):
+				// The detected pitch detection should fail
 				XCTAssert(true)
 				break
 			}
 			expectation.fulfill()
 		}
 		
-		//pitchRecognizer.start()
-		pitchRecognizer.append(bufferPointer: &zeroSignal, count: zeroSignal.count)
+		// When the empty audio is appended to the pitch recognizer
+		pitchRecognizer.append(bufferPointer: &emptySignal, count: emptySignal.count)
 		
 		waitForExpectations(timeout: 5, handler: nil)
 	}
 	
 	func testAudioInputAlert() {
+		
+		// Given a audio input that cannot be started
 		let audioInput = AudioInputMock()
 		audioInput.errorToThrow = AudioInputMockError.testError
 		
+		// When a tuner view model is initialized with the faulty audio input
 		let viewModel = TunerViewModel(
 			pitchRecognizer: PitchRecognizer(),
 			audioInput: audioInput)
 		
+		// The view model is expected to display an alert
 		XCTAssertNotNil(viewModel.alertMessage)
 	}
 	
 	func testTunerViewModelValidPitch() {
 		
+		// Given a tuner view model
 		let viewModel = TunerViewModel(
 			pitchRecognizer: PitchRecognizer(),
 			audioInput: AudioInputMock())
 		
+		// When a 440 Hz pitch detection even occurs
 		viewModel.pitchRecognizer(didReturnNewResult: .success(440))
+		
+		// IThe view model is expected to tell the tuner UI to display an A
 		XCTAssertEqual(viewModel.gaugeValue, 0.5)
 		XCTAssertEqual(viewModel.noteString, "A")
 		XCTAssertEqual(viewModel.accidentalString, nil)
@@ -107,11 +119,15 @@ class SimpleTunerTests: XCTestCase {
 	
 	func testTunerViewModelNegativePitch() {
 		
+		// Given a tuner view model
 		let viewModel = TunerViewModel(
 			pitchRecognizer: PitchRecognizer(),
 			audioInput: AudioInputMock())
 		
+		// When a physically impossible detection event occurs
 		viewModel.pitchRecognizer(didReturnNewResult: .success(-1))
+		
+		// The view model is expected to update tell the tuner to move the inactive state
 		XCTAssertEqual(viewModel.isActive, false)
 	}
 }
