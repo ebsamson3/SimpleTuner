@@ -12,7 +12,7 @@ import AVFoundation
 import Accelerate
 
 protocol PitchRecognizerDelegate: class {
-	func pitchRecognizer(didReturnNewResult result: Result<Float, Error>)
+	func pitchRecognizer(didReturnNewResult result: Result<Double, Error>)
 }
 
 enum PitchRecognizerError: LocalizedError {
@@ -193,7 +193,7 @@ class PitchRecognizer {
 				return
 			}
 			
-			guard pitch >= Float(minimumFrequency) else {
+			guard pitch >= minimumFrequency else {
 				DispatchQueue.main.async { [weak self] in
 					self?.delegate?.pitchRecognizer(
 					didReturnNewResult: .failure(PitchRecognizerError.pitchBelowNyquist))
@@ -340,7 +340,7 @@ class PitchRecognizer {
 	/// Finds the square difference function peak where the delay == fundamental frequency of the signal
 	private func calculatePitch(
 		fromSquareDifference squareDifference: [Float],
-		sampleRate: Double) -> Float?
+		sampleRate: Double) -> Double?
 	{
 		
 		guard squareDifference.count > 2 else {
@@ -403,7 +403,7 @@ class PitchRecognizer {
 		}
 		
 		// Convert the delay in terms of samples to the delay in terms of seconds. This is equal to the fundamental frequency.
-		let pitch = Float(sampleRate) / Float(fundamentalMaximum.delay)
+		let pitch = sampleRate / Double(fundamentalMaximum.delay)
 		
 		return pitch
 	}

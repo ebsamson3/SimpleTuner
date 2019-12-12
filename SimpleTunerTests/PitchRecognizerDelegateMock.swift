@@ -10,9 +10,9 @@ import Foundation
 @testable import SimpleTuner
 
 class PitchRecognizerDelegateMock: PitchRecognizerDelegate {
-	var didReturnResult: ((Result<Float, Error>) -> Void)?
+	var didReturnResult: ((Result<Double, Error>) -> Void)?
 	
-	func pitchRecognizer(didReturnNewResult result: Result<Float, Error>) {
+	func pitchRecognizer(didReturnNewResult result: Result<Double, Error>) {
 		didReturnResult?(result)
 	}
 }

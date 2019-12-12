@@ -17,6 +17,10 @@
 		5F16808D23A098C7003ABF43 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5F16808B23A098C7003ABF43 /* LaunchScreen.storyboard */; };
 		5F16809823A098C7003ABF43 /* SimpleTunerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F16809723A098C7003ABF43 /* SimpleTunerTests.swift */; };
 		5F1680A323A098E6003ABF43 /* MicrophoneInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F1680A223A098E6003ABF43 /* MicrophoneInput.swift */; };
+		5F3A4C6023A19A3C00EF0D47 /* TunerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F3A4C5F23A19A3C00EF0D47 /* TunerViewModel.swift */; };
+		5F3A4C6223A1A43100EF0D47 /* AudioInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F3A4C6123A1A43100EF0D47 /* AudioInput.swift */; };
+		5F3A4C6423A1A5A600EF0D47 /* AudioInputMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F3A4C6323A1A5A600EF0D47 /* AudioInputMock.swift */; };
+		5F3A4C6623A1E6E000EF0D47 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F3A4C6523A1E6E000EF0D47 /* Note.swift */; };
 		5FA1829523A09AF500FC40A9 /* PitchRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA1829423A09AF500FC40A9 /* PitchRecognizer.swift */; };
 		5FD26FF123A0C5B9006E97E8 /* ThreadSafe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FD26FF023A0C5B9006E97E8 /* ThreadSafe.swift */; };
 		5FD26FF323A0D35D006E97E8 /* SineGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FD26FF223A0D35D006E97E8 /* SineGenerator.swift */; };
@@ -48,6 +52,10 @@
 		5F16809723A098C7003ABF43 /* SimpleTunerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleTunerTests.swift; sourceTree = "<group>"; };
 		5F16809923A098C7003ABF43 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5F1680A223A098E6003ABF43 /* MicrophoneInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicrophoneInput.swift; sourceTree = "<group>"; };
+		5F3A4C5F23A19A3C00EF0D47 /* TunerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TunerViewModel.swift; sourceTree = "<group>"; };
+		5F3A4C6123A1A43100EF0D47 /* AudioInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioInput.swift; sourceTree = "<group>"; };
+		5F3A4C6323A1A5A600EF0D47 /* AudioInputMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioInputMock.swift; sourceTree = "<group>"; };
+		5F3A4C6523A1E6E000EF0D47 /* Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
 		5FA1829423A09AF500FC40A9 /* PitchRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PitchRecognizer.swift; sourceTree = "<group>"; };
 		5FD26FF023A0C5B9006E97E8 /* ThreadSafe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadSafe.swift; sourceTree = "<group>"; };
 		5FD26FF223A0D35D006E97E8 /* SineGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SineGenerator.swift; sourceTree = "<group>"; };
@@ -114,8 +122,11 @@
 				5F16808223A098C5003ABF43 /* SceneDelegate.swift */,
 				5F16808423A098C5003ABF43 /* ViewController.swift */,
 				5F16808623A098C5003ABF43 /* Main.storyboard */,
+				5F3A4C5F23A19A3C00EF0D47 /* TunerViewModel.swift */,
+				5F3A4C6123A1A43100EF0D47 /* AudioInput.swift */,
 				5F1680A223A098E6003ABF43 /* MicrophoneInput.swift */,
 				5FA1829423A09AF500FC40A9 /* PitchRecognizer.swift */,
+				5F3A4C6523A1E6E000EF0D47 /* Note.swift */,
 				5FD26FF023A0C5B9006E97E8 /* ThreadSafe.swift */,
 				5F16808923A098C7003ABF43 /* Assets.xcassets */,
 				5F16808B23A098C7003ABF43 /* LaunchScreen.storyboard */,
@@ -131,6 +142,7 @@
 				5F16809923A098C7003ABF43 /* Info.plist */,
 				5FD26FF223A0D35D006E97E8 /* SineGenerator.swift */,
 				5FD26FF623A0D93D006E97E8 /* PitchRecognizerDelegateMock.swift */,
+				5F3A4C6323A1A5A600EF0D47 /* AudioInputMock.swift */,
 			);
 			path = SimpleTunerTests;
 			sourceTree = "<group>";
@@ -318,6 +330,9 @@
 				5FA1829523A09AF500FC40A9 /* PitchRecognizer.swift in Sources */,
 				5F16808523A098C5003ABF43 /* ViewController.swift in Sources */,
 				5F16808123A098C5003ABF43 /* AppDelegate.swift in Sources */,
+				5F3A4C6023A19A3C00EF0D47 /* TunerViewModel.swift in Sources */,
+				5F3A4C6623A1E6E000EF0D47 /* Note.swift in Sources */,
+				5F3A4C6223A1A43100EF0D47 /* AudioInput.swift in Sources */,
 				5FD26FF123A0C5B9006E97E8 /* ThreadSafe.swift in Sources */,
 				5F16808323A098C5003ABF43 /* SceneDelegate.swift in Sources */,
 			);
@@ -330,6 +345,7 @@
 				5FD26FF323A0D35D006E97E8 /* SineGenerator.swift in Sources */,
 				5FD26FF723A0D93D006E97E8 /* PitchRecognizerDelegateMock.swift in Sources */,
 				5F16809823A098C7003ABF43 /* SimpleTunerTests.swift in Sources */,
+				5F3A4C6423A1A5A600EF0D47 /* AudioInputMock.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

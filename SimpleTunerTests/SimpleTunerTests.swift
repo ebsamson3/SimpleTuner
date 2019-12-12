@@ -38,7 +38,7 @@ class SimpleTunerTests: XCTestCase {
 		delegate.didReturnResult = { result in
 			switch result {
 			case .success(let pitch):
-				XCTAssertEqual(round(pitch), Float(testPitch))
+				XCTAssertEqual(round(pitch), testPitch)
 			case .failure(let error):
 				XCTFail("Pitch detection failed with error: \(error.localizedDescription)")
 				break
@@ -79,5 +79,39 @@ class SimpleTunerTests: XCTestCase {
 		pitchRecognizer.append(bufferPointer: &zeroSignal, count: zeroSignal.count)
 		
 		waitForExpectations(timeout: 5, handler: nil)
+	}
+	
+	func testAudioInputAlert() {
+		let audioInput = AudioInputMock()
+		audioInput.errorToThrow = AudioInputMockError.testError
+		
+		let viewModel = TunerViewModel(
+			pitchRecognizer: PitchRecognizer(),
+			audioInput: audioInput)
+		
+		XCTAssertNotNil(viewModel.alertMessage)
+	}
+	
+	func testTunerViewModelValidPitch() {
+		
+		let viewModel = TunerViewModel(
+			pitchRecognizer: PitchRecognizer(),
+			audioInput: AudioInputMock())
+		
+		viewModel.pitchRecognizer(didReturnNewResult: .success(440))
+		XCTAssertEqual(viewModel.gaugeValue, 0.5)
+		XCTAssertEqual(viewModel.noteString, "A")
+		XCTAssertEqual(viewModel.accidentalString, nil)
+		XCTAssertEqual(viewModel.isActive, true)
+	}
+	
+	func testTunerViewModelNegativePitch() {
+		
+		let viewModel = TunerViewModel(
+			pitchRecognizer: PitchRecognizer(),
+			audioInput: AudioInputMock())
+		
+		viewModel.pitchRecognizer(didReturnNewResult: .success(-1))
+		XCTAssertEqual(viewModel.isActive, false)
 	}
 }

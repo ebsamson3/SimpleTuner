@@ -13,7 +13,7 @@ import Foundation
 import Foundation
 import AVFoundation
 
-class MicrophoneInput {
+class MicrophoneInput: AudioInput {
 	
 	var sampleRate: Double {
 		return audioEngine
