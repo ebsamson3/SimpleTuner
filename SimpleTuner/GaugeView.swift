@@ -208,7 +208,7 @@ class GaugeView: UIView {
 			needleLayer.transform = CATransform3DMakeRotation(newAngle, 0, 0, 1)
 			let midAngleValue = (max(newAngle, currentAngle) - min(newAngle, currentAngle))
 				/ 2 + min(newAngle, currentAngle)
-			
+
 			CATransaction.begin()
 			CATransaction.setDisableActions(true)
 			let animation = CAKeyframeAnimation(keyPath: "transform.rotation.z")

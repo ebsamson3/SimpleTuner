@@ -21,7 +21,7 @@ class TunerViewController: UIViewController {
 		super.init(nibName: nil, bundle: nil)
 		
 		viewModel.didSetGaugeValue = { [weak self] gaugeValue in
-			self?.tunerView.gaugeValue = gaugeValue
+			self?.tunerView.setGaugeValue(gaugeValue, animated: true)
 		}
 		
 		viewModel.didSetNoteString = { [weak self] noteString in
@@ -36,7 +36,7 @@ class TunerViewController: UIViewController {
 			self?.tunerView.isActive = isActive
 		}
 		
-		tunerView.gaugeValue = viewModel.gaugeValue
+		tunerView.setGaugeValue(viewModel.gaugeValue, animated: false)
 		tunerView.noteString = viewModel.noteString
 		tunerView.accidentalString = viewModel.accidentalString
 		tunerView.isActive = viewModel.isActive

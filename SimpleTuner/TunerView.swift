@@ -10,10 +10,8 @@ import UIKit
 
 class TunerView: UIView {
 	
-	var gaugeValue: Float = 0 {
-		didSet {
-			gaugeView.setValue(gaugeValue, animated: true)
-		}
+	var gaugeValue: Float {
+		return gaugeView.value
 	}
 	
 	var noteString: String? = "C" {
@@ -37,7 +35,6 @@ class TunerView: UIView {
 	
 	private lazy var gaugeView: GaugeView = {
 		let gaugeView = GaugeView()
-		gaugeView.setValue(gaugeValue, animated: false)
 		return gaugeView
 	}()
 	
@@ -72,6 +69,10 @@ class TunerView: UIView {
 	required init?(coder: NSCoder) {
 		super.init(coder: coder)
 		configure()
+	}
+	
+	func setGaugeValue(_ value: Float, animated: Bool) {
+		gaugeView.setValue(value, animated: animated)
 	}
 	
 	private func configure() {
