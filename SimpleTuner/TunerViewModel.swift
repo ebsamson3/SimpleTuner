@@ -11,9 +11,9 @@ import Foundation
 class TunerViewModel {
 	
 	var didSetGaugeValue: ((Float) -> ())?
-	var didSetNoteStringValue: ((String?) -> ())?
-	var didStAccidentalStringValue: ((String?) -> ())?
-	var didSetIsActiveValue: ((Bool) -> Void)?
+	var didSetNoteString: ((String?) -> ())?
+	var didStAccidentalString: ((String?) -> ())?
+	var didSetIsActive: ((Bool) -> Void)?
 	
 	var gaugeValue: Float = 0 {
 		didSet {
@@ -23,19 +23,19 @@ class TunerViewModel {
 	
 	var noteString: String? = "C" {
 		didSet {
-			didSetNoteStringValue?(noteString)
+			didSetNoteString?(noteString)
 		}
 	}
 	
 	var accidentalString: String? = nil {
 		didSet {
-			didStAccidentalStringValue?(accidentalString)
+			didStAccidentalString?(accidentalString)
 		}
 	}
 	
 	var isActive: Bool = false {
 		didSet {
-			didSetIsActiveValue?(isActive)
+			didSetIsActive?(isActive)
 		}
 	}
 	
