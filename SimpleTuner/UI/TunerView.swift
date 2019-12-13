@@ -36,21 +36,30 @@ class TunerView: UIView {
 	}
 	
 	//MARK: Subviews
+	
+	let gaugeSize: CGFloat = {
+		let screenBounds = UIScreen.main.bounds
+		let minScreenDimension = min(screenBounds.width, screenBounds.height)
+		let maxGaugeSize: CGFloat = 400
+		let gaugeSize = min(minScreenDimension * 0.75, maxGaugeSize)
+		return gaugeSize
+	}()
+	
 	private var gaugeView = GaugeView()
 	
 	private lazy var noteLabel: UILabel = {
 		let label = UILabel()
-		label.font = UIFont.systemFont(ofSize: 100)
 		label.text = noteString
 		label.baselineAdjustment = .alignCenters
+		label.font = UIFont.systemFont(ofSize: gaugeSize / 3)
 		label.textColor = isActive ? .white : .darkGray
 		return label
 	}()
 	
 	private lazy var accidentalLabel: UILabel = {
 		let label = UILabel()
-		label.font = UIFont.systemFont(ofSize: 33)
 		label.text = accidentalString
+		label.font = UIFont.systemFont(ofSize: gaugeSize / 9)
 		label.baselineAdjustment = .alignCenters
 		label.textColor = isActive ? .white : .darkGray
 		return label
@@ -88,11 +97,6 @@ class TunerView: UIView {
 		noteLabel.translatesAutoresizingMaskIntoConstraints = false
 		accidentalLabel.translatesAutoresizingMaskIntoConstraints = false
 		gaugeView.translatesAutoresizingMaskIntoConstraints = false
-		
-		let screenBounds = UIScreen.main.bounds
-		let minScreenDimension = min(screenBounds.width, screenBounds.height)
-		let maxGaugeSize: CGFloat = 400
-		let gaugeSize = min(minScreenDimension * 0.75, maxGaugeSize)
 		
 		NSLayoutConstraint.activate([
 			gaugeView.centerXAnchor.constraint(equalTo: centerXAnchor),

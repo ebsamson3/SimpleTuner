@@ -156,12 +156,13 @@ class PitchRecognizer {
 			readableBytes)
 		
 		// Double input array length with padded zeros
-		inputArray.append(contentsOf: Array(repeating: 0, count: calculationInputSize))
+		//inputArray.append(contentsOf: Array(repeating: 0, count: calculationInputSize))
 		
 		// Calculate linear autocorrelation
 		let linearAC = calculateLinearAutocorrelation(
 			ofInput: &inputArray,
 			count: inputArray.count)
+		
 		
 		// Find the square difference to remove linear autocorrelation tapering due to signal dropoff
 		let squareDifference = calculatSquareDifference(
@@ -199,8 +200,13 @@ class PitchRecognizer {
 		ofInput input: UnsafeMutablePointer<Float>,
 		count: Int) -> [Float]
 	{
-		let log2n = UInt(floor(log2(Double(count))))
-		let nPowerOfTwo = Int(1 << log2n) // Real buffer length (must be power of 2)
+		// Double the input count (pads calculation with zeros equal to the signal length)
+		let paddedCount = 2 * count
+		
+		// Converting Padded Count to Power of Two (must be power of 2)
+		let log2n = UInt(floor(log2(Double(paddedCount))))
+		let nPowerOfTwo = Int(1 << log2n)
+		
 		let nOver2 = nPowerOfTwo / 2 // Complex buffer length
 		
 		// Real and imaginary components of split complex buffer
@@ -225,7 +231,7 @@ class PitchRecognizer {
 			vDSP_ctoz(
 				$0, 2,
 				&tempSplitComplex, 1,
-				vDSP_Length(nOver2))
+				vDSP_Length(count / 2))
 		}
 		
 		// Forward FFT
@@ -253,7 +259,7 @@ class PitchRecognizer {
 		
 		// Combining the scaling for the FFT and IFFT
 		// - FFT Requires scaling by 1 / 2 ( Done twice to account for complex conjugate scaling)
-		// - IFFT Requires scaling by 1 / n
+		// - IFFT Requires scaling by 1 / nPowerOfTwo
 		var scale: Float = 1 / Float(nPowerOfTwo * 4)
 		vDSP_vsmul(tempSplitComplex.realp, 1, &scale, tempSplitComplex.realp, 1, vDSP_Length(nOver2))
 		vDSP_vsmul(tempSplitComplex.imagp, 1, &scale, tempSplitComplex.imagp, 1, vDSP_Length(nOver2))
