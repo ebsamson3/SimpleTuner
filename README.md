@@ -11,4 +11,4 @@ A minimalist iOS tuner app written in Swift. Inspired by Jack Schaedler's magnif
 
 ## **To Do**
 
-Implement parabolic interpolation to increase the accuracy of pitch recognition.
+Implement parabolic interpolation to increase pitch recognition accuracy.
